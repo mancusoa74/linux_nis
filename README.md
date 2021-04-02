@@ -11,13 +11,19 @@ Di seguiti i passi per installare e configurare Linux come NFS e NIS server:
 
 
 1. installare NFS server
-> sudp apt install nfs-kernel-server
+```
+sudo apt install nfs-kernel-server
+```
 
 2. installare NIS server e definire dominio NIS
-> sudo apt install nis
+```
+sudo apt install nis
+```
 
 3. creare la directory /export/home
-> sudo mkdir -p /export/home
+```
+sudo mkdir -p /export/home
+```
 
 4. configurare il file /etc/exports
 ```
@@ -25,7 +31,9 @@ Di seguiti i passi per installare e configurare Linux come NFS e NIS server:
 ```
 
 5. far ripartire NFS server 
-> sudo systemctl restart nfs-kernel-server
+```
+sudo systemctl restart nfs-kernel-server
+```
 
 6. configurare il file /etc/yp.conf per definire il nome del server nis
 ```
@@ -73,14 +81,19 @@ YPXFRDARGS=
 ```
 
 9. restart nis service con 
-> sudo systemctl restart  nis
+```
+sudo systemctl restart  nis
+```
 
 10. inizializzare il server nis
-> /usr/lib/yp/ypinit  -m 
+```
+/usr/lib/yp/ypinit  -m 
+```
 
 11. per ogni nuovo utente aggiunto al server, fare aggiornamento tabelle
-> make -C /var/yp
-
+```
+make -C /var/yp
+```
 
 ## CLIENT
 
@@ -93,13 +106,19 @@ sudo apt install nfs-client
 ```
 
 2. creare /export/home
-> sudo mkdir -p /export/home
+```
+sudo mkdir -p /export/home
+```
 
 3. configurare il file /etc/fastab
-> openmediavault.local:/export/home /export/home nfs defaults 0 0
+```
+openmediavault.local:/export/home /export/home nfs defaults 0 0
+```
 
 4. configurare il file /etc/yp.conf
->domain agnelli.inf.local  server openmediavault.local
+```
+domain agnelli.inf.local  server openmediavault.local
+```
 
 5. configurare il file /etc/nsswitch.conf
 ```
@@ -126,7 +145,9 @@ sudo systemctl restart rpcbind
 sudo systemctl restart nis
 ```
 7. testare la configurazione con
-> yptest
+```
+yptest
+```
 
 8. configurare il file /etc/lightdm/lightdm.conf.d/70-linuxminf.conf
 
@@ -139,8 +160,9 @@ allow-guest=false
 ```
 
 9. fare il reboot del pc
-> sudo reboot
-
+```
+sudo reboot
+```
 
 ## ANSIBLE
 
@@ -150,4 +172,6 @@ Aggiorna il file inventory con i dati corretti per il tuo client.
 
 esegui il playbook in questo modo:
 
-> ansible-playbook -i inventory install_nis_client.yml
+```
+ansible-playbook -i inventory install_nis_client.yml
+```
