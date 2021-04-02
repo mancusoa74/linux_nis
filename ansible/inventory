@@ -1,0 +1,11 @@
+[client01]
+192.168.111.10
+
+[all:vars]
+ansible_user=<UTENTE>
+ansible_password=<PASSWORD>
+ansible_connection=ssh
+ansible_become=yes 
+ansible_become_method=sudo
+ansible_become_pass=<PASSWORD>
+

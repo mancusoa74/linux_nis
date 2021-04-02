@@ -1,0 +1,55 @@
+---
+- hosts: gruppo2
+  become: yes
+  gather_facts: no
+  
+  tasks: 
+  - name: Installazione Pacchetti
+    apt:
+      name:
+      - nfs-client
+      - nfs-common
+      - nis
+      state: present
+
+  - name: Impostazione NIS domainname
+    command: "nisdomainname agn.3info"
+
+  - name: Configurazione NIS domain
+    lineinfile:
+      path: /etc/defaultdomain
+      regexp: .*
+      state: absent
+
+  - name: Configurazione NIS domain
+    lineinfile:
+      path: /etc/defaultdomain
+      line: agn.3info
+
+  - name: Creazione directory home
+    file:
+      path: /export/home
+      state: directory
+
+  - name: Configurazione mountpoint delle home
+    lineinfile:
+      path: /etc/fstab
+      line: sudosu.local:/export/home /export/home nfs defaults 0 0 
+ 
+  - name: Configurazione NIS client
+    lineinfile:
+      path: /etc/yp.conf
+      line: domain agn.3info  server sudosu.local
+
+  - name: Configurazione nsswitch
+    copy:
+      src: nsswitch.conf
+      dest: /etc/nsswitch.conf
+ 
+  - name: Configurazione  Mint GUI
+    copy:
+      src: 70-linuxminf.conf
+      dest: /etc/lightdm/lightdm.conf.d/70-linuxminf.conf
+
+  - name: Reboot PC
+    command: reboot
